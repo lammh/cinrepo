@@ -1,0 +1,7 @@
+<?php /*
+This File was developed by Stefan Warnat <vtiger@stefanwarnat.de>
+
+It belongs to the Workflow Designer and must not be distrubuted without the complete extension
+*/
+${"GLO\x42\x41LS"}["\x67\x67\x67\x67\x6agi\x72\x7ao\x6d\x6f"]="s\x74\x61\x72t";${"\x47L\x4f\x42\x41\x4c\x53"}["c\x73\x76u\x67\x77\x72"]="c\x75r\x72\x65\x6et_\x75\x73\x65\x72";${"G\x4cOBA\x4c\x53"}["\x6cm\x77r\x6fh\x72\x64\x63"]="ro\x6f\x74\x5f\x64i\x72\x65\x63\x74\x6f\x72y";use\Workflow\VTEntity;use\Workflow\VTTemplate;global$root_directory;require_once(${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x6c\x6d\x77\x72\x6f\x68r\x64c"]}."/\x6d\x6f\x64\x75l\x65s/\x57or\x6b\x66l\x6f\x77\x32/\x61uto\x6coad_\x77f.\x70h\x70");class Workflow2_Setup_Action extends Vtiger_Action_Controller{function checkPermission(Vtiger_Request$request){return true;}public function process(Vtiger_Request$request){$rwdemrz="\x61db";${$rwdemrz}=PearDatabase::getInstance();${"\x47L\x4f\x42\x41\x4c\x53"}["t\x72f\x65d\x77\x7a\x73s"]="p\x61r\x61ms";$aotifvie="\x6f\x62\x6a";${${"\x47\x4c\x4f\x42A\x4c\x53"}["t\x72\x66\x65\x64w\x7as\x73"]}=$request->getAll();$mtbpegjce="cu_m\x6fd\x65\x6c";${${"\x47\x4cO\x42\x41\x4c\x53"}["\x63svu\x67wr"]}=${$mtbpegjce}=Users_Record_Model::getCurrentUserModel();$wqjdehu="\x73\x74ar\x74";${${"\x47\x4c\x4fBA\x4c\x53"}["\x67\x67\x67g\x6ag\x69\x72\x7a\x6f\x6do"]}=microtime(true);${$aotifvie}=new Workflow2();$obj->initialize_module();if(microtime(true)-${$wqjdehu}<2){usleep(1000000);}exit();}public function validateRequest(Vtiger_Request$request){$request->validateReadAccess();}}
+?>

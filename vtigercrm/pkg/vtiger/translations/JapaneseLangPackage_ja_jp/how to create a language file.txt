@@ -1,0 +1,6 @@
+1.配下の./modules/と./manifest.xmlを選択しzipに圧縮する
+　※注意1：./modules/と./manifest.xmlが入っているフォルダをzipに圧縮しない事
+　※注意2：本ファイルをzipに圧縮しない事
+2.vtigerのモジュールマネージャでインポート出来るか確認する
+
+修正方法は、Redmine　#471

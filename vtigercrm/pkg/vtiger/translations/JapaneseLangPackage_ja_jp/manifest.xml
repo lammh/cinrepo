@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<module>
+	<type>language</type>
+	<name>Japanese</name>
+	<label>Japanese ( 日本語 )</label>
+	<prefix>ja_jp</prefix>
+	<version>6.0.0</version>
+	<encoding>UTF-8</encoding>
+	<author>vtiger CRM Japanese project http://forge.vtiger.com/projects/japaneselang/, hhokawa ; fan site http://www.vtigercrm.jp, toshi, hime and others</author>
+	<license>MPL1.1</license>
+	<dependencies>
+	  <vtiger_version>6.0.0.rc</vtiger_version>
+	  <vtiger_max_version>6.*</vtiger_max_version>
+  </dependencies>
+</module>
+

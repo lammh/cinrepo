@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_clientaccount</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_clientaccount` (
+  `clientaccountid` int(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`clientaccountid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_clientaccountcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_clientaccountcf` (
+  `clientaccountid` int(11) NOT NULL,
+  PRIMARY KEY (`clientaccountid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

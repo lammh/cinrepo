@@ -1,0 +1,7 @@
+<?php /*
+This File was developed by Stefan Warnat <vtiger@stefanwarnat.de>
+
+It belongs to the Workflow Designer and must not be distrubuted without the complete extension
+*/
+${"G\x4c\x4fB\x41\x4cS"}["\x69n\x75\x62\x63\x74ox\x70"]="\x72oo\x74\x5fdir\x65c\x74\x6fr\x79";global$root_directory;require_once(${${"\x47L\x4fB\x41\x4c\x53"}["inu\x62\x63\x74\x6f\x78p"]}."/m\x6f\x64\x75\x6ces/W\x6frk\x66l\x6f\x77\x32/\x61\x75\x74ol\x6fa\x64\x5fwf\x2ep\x68p");class Settings_Workflow2_TaskSaveTitle_Action extends Settings_Vtiger_Basic_Action{public function process(Vtiger_Request$request){${"GLOBALS"}["\x78gv\x75e\x64b\x76\x6c\x68"]="\x73\x71\x6c";$jtobekurppy="\x77\x6frkflow\x49D";$juljyegeb="\x61\x64\x62";$xemwkbhdv="\x62\x6c\x6f\x63\x6b";${$juljyegeb}=PearDatabase::getInstance();$bdxjobomfth="\x73\x71\x6c";${$jtobekurppy}=intval($request->get("\x77\x6frk\x66\x6c\x6f\x77"));${$xemwkbhdv}=$request->get("b\x6cock\x69\x64");${$bdxjobomfth}="\x55P\x44\x41T\x45 vt\x69\x67e\x72_wf\x70\x5fblo\x63ks S\x45T \x74\x65\x78t\x20\x3d ? \x57\x48\x45RE\x20\x69d \x3d\x20?";$adb->pquery(${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x78\x67vu\x65\x64\x62\x76l\x68"]},array($request->get("t\x65\x78\x74"),intval($request->get("\x62\x6cock_i\x64"))),true);}}
+?>

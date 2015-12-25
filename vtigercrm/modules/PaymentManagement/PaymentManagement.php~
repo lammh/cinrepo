@@ -1,0 +1,145 @@
+<?php
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
+
+//require_once('data/CRMEntity.php');
+
+
+class PaymentManagement extends CRMEntity {
+    var $module_name = 'PaymentManagement';
+	var $table_name = 'vtiger_payment_management';
+	var $table_index= 'payment_management_id';
+
+	/**
+	 * Mandatory table for supporting custom fields.
+	 */
+	var $customFieldTable = Array('vtiger_payment_managementcf', 'payment_management_id');
+
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	var $tab_name = Array('vtiger_crmentity', 'vtiger_payment_management', 'vtiger_payment_managementcf');
+
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	var $tab_name_index = Array(
+		'vtiger_crmentity' => 'crmid',
+		'vtiger_payment_management' => 'payment_management_id',
+		'vtiger_payment_managementcf'=>'payment_management_id');
+
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
+	var $list_fields = Array (
+		/* Format: Field Label => Array(tablename, columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'PaymentManagement Name' => Array('vtiger_payment_management', 'titlename'),
+		'Assigned To' => Array('crmentity','smownerid')
+	);
+	var $list_fields_name = Array (
+		/* Format: Field Label => fieldname */
+		'PaymentManagement Name' => 'titlename',
+		'Assigned To' => 'assigned_user_id',
+	);
+
+	// Make the field link to detail view
+	var $list_link_field = 'titlename';
+
+	// For Ppup listview and UI type support
+	var $search_fields = Array(
+		/* Format: Field Label => Array(tablename, columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'PaymentManagement Name' => Array('vtiger_payment_management', 'titlename'),
+		'Assigned To' => Array('vtiger_crmentity','assigned_user_id'),
+	);
+	var $search_fields_name = Array (
+		/* Format: Field Label => fieldname */
+		'PaymentManagement Name' => 'titlename',
+		'Assigned To' => 'assigned_user_id',
+	);
+
+	// For Popup window record selection
+	var $popup_fields = Array ('titlename');
+
+	// For Alphabetical search
+	var $def_basicsearch_col = 'titlename';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'titlename';
+
+	// Used when enabling/disabling the mandatory fields for the module.
+	// Refers to vtiger_field.fieldname values.
+	var $mandatory_fields = Array('titlename','assigned_user_id');
+
+	var $default_order_by = 'vtiger_payment_management.titlename';
+	var $default_sort_order='ASC';
+
+
+
+	function PaymentManagement() {
+		$this->log = LoggerManager::getLogger('PaymentManagement');
+		$this->db = PearDatabase::getInstance();
+		$this->column_fields = getColumnFields('PaymentManagement');
+	}
+
+	function save_module()
+	{
+        //die("save_module");
+		global $adb;
+
+
+		// Update the currency id and the conversion rate for the quotes
+		$update_query = "update vtiger_quotes set currency_id=?, conversion_rate=? where quoteid=?";
+		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
+		$adb->pquery($update_query, $update_params);
+	}
+
+
+	/**
+	* Invoked when special actions are performed on the module.
+	* @param String Module name
+	* @param String Event Type
+	*/
+	function vtlib_handler($moduleName, $eventType) {
+        die("vtlib_handler");
+		global $adb;
+ 		if($eventType == 'module.postinstall') {
+			// TODO Handle actions after this module is installed.
+		} else if($eventType == 'module.disabled') {
+			// TODO Handle actions before this module is being uninstalled.
+		} else if($eventType == 'module.preuninstall') {
+			// TODO Handle actions when this module is about to be deleted.
+		} else if($eventType == 'module.preupdate') {
+			// TODO Handle actions before this module is updated.
+		} else if($eventType == 'module.postupdate') {
+			// TODO Handle actions after this module is updated.
+		}
+ 	}
+
+	function save_related_module($module, $crmid, $with_module, $with_crmids) {
+		$adb = $this->db;
+
+		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
+		foreach($with_crmids as $with_crmid) {
+			if($with_module == 'Products')
+				$adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($crmid, $with_crmid, $module));
+			elseif($with_module == 'Campaigns') {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
+												array($with_crmid, $crmid));
+				if($checkResult && $adb->num_rows($checkResult) > 0) {
+					continue;
+				}
+				$adb->pquery("insert into vtiger_campaignaccountrel values(?,?,1)", array($with_crmid, $crmid));
+			} else {
+				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
+			}
+		}
+	}
+}

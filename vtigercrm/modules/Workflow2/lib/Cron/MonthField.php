@@ -1,0 +1,7 @@
+<?php /*
+This File was developed by Stefan Warnat <vtiger@stefanwarnat.de>
+
+It belongs to the Workflow Designer and must not be distrubuted without the complete extension
+*/
+namespace Cron;${"G\x4c\x4f\x42\x41LS"}["\x74\x66bc\x67\x6a"]="i\x6e\x76\x65r\x74";${"\x47\x4c\x4fB\x41\x4c\x53"}["\x78\x7amb\x6ddo\x6f\x69h\x65"]="\x76\x61\x6c\x75\x65";use DateTime;class MonthField extends AbstractField{public function isSatisfiedBy(DateTime$date,$value){$tjcyguntyj="\x76a\x6c\x75e";$hbvgxe="\x76a\x6c\x75e";${${"G\x4cO\x42\x41\x4c\x53"}["\x78\x7am\x62md\x6f\x6f\x69\x68\x65"]}=str_ireplace(array("JA\x4e","\x46EB","M\x41\x52","\x41PR","\x4d\x41Y","J\x55\x4e","J\x55\x4c","AU\x47","S\x45P","OC\x54","N\x4f\x56","\x44EC"),range(1,12),${$tjcyguntyj});return$this->isSatisfied($date->format("m"),${$hbvgxe});}public function increment(DateTime$date,$invert=false){if(${${"G\x4c\x4f\x42A\x4cS"}["\x74f\x62\x63\x67\x6a"]}){$date->modify("l\x61s\x74\x20da\x79\x20of\x20pr\x65\x76io\x75s\x20\x6do\x6eth");$date->setTime(23,59);}else{$date->modify("firs\x74 \x64ay of n\x65\x78\x74 mo\x6et\x68");$date->setTime(0,0);}return$this;}public function validate($value){return(bool)preg_match("/[\x5c*,\\/\\-\x30-\x39A-Z]+/",${${"\x47\x4c\x4f\x42A\x4cS"}["\x78\x7a\x6d\x62\x6ddo\x6fihe"]});}}
+?>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<task input="true" styleclass="" version="1">
+  <name>PLZService</name>
+  <classname>WfTaskPLZService</classname>
+  <label>parse Postalcode</label>
+  <group>LBL_CAT_EXPERT</group>
+  <outputs>
+    <output value="yes" text="Weiter">Weiter</output>
+  </outputs>
+  <support_url>
+  </support_url>
+  <author>
+    <name>Administrator</name>
+    <email prefix="info" domain="domain.com" />
+  </author>
+  <files>
+    <file>modules\Workflow2\extends\additionally\plzservice</file>
+  </files>
+</task>

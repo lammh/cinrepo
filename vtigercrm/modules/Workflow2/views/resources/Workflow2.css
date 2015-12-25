@@ -1,0 +1,16 @@
+.chzn-container .chzn-results {
+    max-height:250px;
+}
+.intertTextfield {
+    display:none;
+}
+.workflowActions .unpressed {
+    color: #999;
+    background-color: #f5f5f5;
+}
+.workflowActions .pressed {
+    text-decoration: underline;
+}
+.select2-container.productSelect {
+    margin-left:0;
+}

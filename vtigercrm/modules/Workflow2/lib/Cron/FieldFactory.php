@@ -1,0 +1,7 @@
+<?php /*
+This File was developed by Stefan Warnat <vtiger@stefanwarnat.de>
+
+It belongs to the Workflow Designer and must not be distrubuted without the complete extension
+*/
+namespace Cron;${"\x47\x4c\x4f\x42\x41\x4cS"}["\x67\x66d\x79\x77\x6do\x73\x64a\x71"]="\x70\x6f\x73\x69ti\x6fn";class FieldFactory{private$fields=array();public function getField($position){if(!isset($this->fields[${${"\x47L\x4fB\x41L\x53"}["\x67fdyw\x6do\x73\x64\x61q"]}])){${"\x47\x4c\x4fB\x41LS"}["\x67h\x72pd\x63"]="\x70\x6f\x73\x69tio\x6e";$suvgjeunedlq="po\x73it\x69\x6fn";$yjhrilb="\x70o\x73i\x74i\x6f\x6e";$udfoywie="\x70o\x73i\x74i\x6f\x6e";switch(${$udfoywie}){case 0:$this->fields[${$suvgjeunedlq}]=new MinutesField();break;case 1:$this->fields[${${"\x47\x4cO\x42A\x4cS"}["\x67\x66\x64\x79\x77mo\x73\x64\x61q"]}]=new HoursField();break;case 2:$this->fields[${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x67\x66\x64\x79\x77\x6do\x73\x64a\x71"]}]=new DayOfMonthField();break;case 3:$this->fields[${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x67\x66\x64\x79\x77m\x6fsd\x61\x71"]}]=new MonthField();break;case 4:$this->fields[${$yjhrilb}]=new DayOfWeekField();break;case 5:$this->fields[${${"\x47\x4c\x4f\x42\x41LS"}["\x67\x68\x72pd\x63"]}]=new YearField();break;default:throw new\InvalidArgumentException(${${"GL\x4fB\x41\x4c\x53"}["\x67f\x64\x79\x77\x6d\x6fsdaq"]}."\x20\x69\x73 no\x74\x20a v\x61lid\x20\x70\x6f\x73i\x74\x69on");}}$bibcvlfru="\x70\x6f\x73\x69\x74\x69o\x6e";return$this->fields[${$bibcvlfru}];}}
+?>

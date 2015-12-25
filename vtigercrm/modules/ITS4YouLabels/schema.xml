@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>its4you_labels</name>
+			<sql><![CDATA[CREATE TABLE `its4you_labels` (
+  `id` int(19) NOT NULL AUTO_INCREMENT,
+  `tabid` int(19) NOT NULL,
+  `fieldid` int(19) NOT NULL,
+  `lang` char(5) NOT NULL,
+  `translate_label` varchar(255) NOT NULL,
+  `is_in_global` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tabid` (`tabid`),
+  KEY `fieldid` (`fieldid`),
+  KEY `lang` (`lang`),
+  KEY `is_in_global` (`is_in_global`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

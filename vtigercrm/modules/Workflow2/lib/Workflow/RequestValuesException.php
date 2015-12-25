@@ -1,0 +1,7 @@
+<?php /*
+This File was developed by Stefan Warnat <vtiger@stefanwarnat.de>
+
+It belongs to the Workflow Designer and must not be distrubuted without the complete extension
+*/
+namespace Workflow;${"\x47\x4c\x4fB\x41\x4c\x53"}["\x78lg\x6f\x6a\x64"]="\x63o\x6e\x74ex\x74";${"\x47L\x4f\x42A\x4c\x53"}["x\x78\x65\x75\x6d\x67\x63yr"]="fie\x6cds";class RequestValuesException extends\Exception{private$_reqValuesKey=null;private$_fields=null;private$_task=null;private$_context=null;public function __construct($key,$fields,$message,\Workflow\Task$task,\Workflow\VTEntity$context){${"\x47\x4cOBA\x4c\x53"}["i\x77\x67\x66\x6bnl\x6c\x68"]="k\x65y";$hflbbdej="t\x61\x73\x6b";$this->code=100;$this->_reqValuesKey=${${"\x47\x4c\x4fBA\x4cS"}["\x69\x77\x67\x66k\x6e\x6c\x6c\x68"]};$this->_fields=${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x78\x78e\x75\x6dgc\x79\x72"]};${"\x47\x4cOBA\x4cS"}["\x6c\x76\x78\x71\x7a\x67\x69m"]="\x6des\x73a\x67\x65";$this->_task=${$hflbbdej};$this->_context=${${"\x47\x4cO\x42A\x4c\x53"}["\x78\x6c\x67\x6fjd"]};$this->message=${${"\x47LOB\x41LS"}["l\x76\x78\x71\x7a\x67\x69m"]};}public function getContext(){return$this->_context;}public function getTask(){return$this->_task;}public function getKey(){return$this->_reqValuesKey;}public function getFields(){return$this->_fields;}}
+?>

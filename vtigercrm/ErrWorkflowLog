@@ -1,0 +1,63 @@
+Expression Syntax Error.
+ syntax error # - # Block: 129 # -
+Expression Syntax Error.
+ syntax error # - # Block: 129 # -
+Expression Syntax Error.
+ syntax error # - # Block: 129 # -
+Database Error in Query SELECT module_name FROM vtiger_wf_settings WHERE vtiger_wf_settings.id = <br/><br/>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1O:12:"PearDatabase":17:{s:8:"database";O:12:"ADODB_mysqli":91:{s:12:"databaseType";s:6:"mysqli";s:12:"dataProvider";s:5:"mysql";s:11:"hasInsertID";b:1;s:15:"hasAffectedRows";b:1;s:13:"metaTablesSQL";s:131:"SELECT
+			TABLE_NAME,
+			CASE WHEN TABLE_TYPE = 'VIEW' THEN 'V' ELSE 'T' END
+		FROM INFORMATION_SCHEMA.TABLES
+		WHERE TABLE_SCHEMA=";s:14:"metaColumnsSQL";s:22:"SHOW COLUMNS FROM `%s`";s:12:"fmtTimeStamp";s:13:"'Y-m-d H:i:s'";s:8:"hasLimit";b:1;s:12:"hasMoveFirst";b:1;s:8:"hasGenID";b:1;s:8:"isoDates";b:1;s:7:"sysDate";s:9:"CURDATE()";s:12:"sysTimeStamp";s:5:"NOW()";s:15:"hasTransactions";b:1;s:15:"forceNewConnect";b:0;s:16:"poorAffectedRows";b:1;s:11:"clientFlags";i:0;s:6:"substr";s:9:"substring";s:4:"port";s:4:"3306";s:6:"socket";b:0;s:15:"_bindInputArray";b:0;s:9:"nameQuote";s:1:"`";s:11:"optionFlags";a:1:{i:0;a:2:{i:0;i:5;i:1;i:0;}}s:10:"arrayClass";s:25:"ADORecordSet_array_mysqli";s:10:"multiQuery";b:0;s:9:"_genIDSQL";s:38:"update %s set id=LAST_INSERT_ID(id+1);";s:10:"_genSeqSQL";s:33:"create table %s (id int not null)";s:15:"_genSeqCountSQL";s:23:"select count(*) from %s";s:11:"_genSeq2SQL";s:26:"insert into %s values (%s)";s:11:"_dropSeqSQL";s:13:"drop table %s";s:8:"database";s:6:"vtiger";s:4:"host";s:14:"localhost:3306";s:4:"user";s:4:"root";s:8:"password";s:10:"not stored";s:5:"debug";b:0;s:11:"maxblobsize";i:262144;s:15:"concat_operator";s:1:"+";s:6:"length";s:6:"length";s:6:"random";s:6:"rand()";s:9:"upperCase";s:5:"upper";s:7:"fmtDate";s:7:"'Y-m-d'";s:4:"true";s:1:"1";s:5:"false";s:1:"0";s:12:"replaceQuote";s:2:"\'";s:7:"charSet";b:0;s:16:"metaDatabasesSQL";s:0:"";s:13:"uniqueOrderBy";b:0;s:9:"emptyDate";s:6:"&nbsp;";s:14:"emptyTimeStamp";s:6:"&nbsp;";s:9:"lastInsID";b:0;s:6:"hasTop";b:0;s:8:"readOnly";b:0;s:5:"genID";i:0;s:12:"raiseErrorFn";b:0;s:9:"cacheSecs";i:3600;s:8:"memCache";b:0;s:12:"memCacheHost";N;s:12:"memCachePort";i:11211;s:16:"memCacheCompress";b:0;s:13:"sysUTimeStamp";b:0;s:13:"noNullStrings";b:0;s:12:"numCacheHits";i:0;s:14:"numCacheMisses";i:0;s:20:"pageExecuteCountRows";b:1;s:10:"uniqueSort";b:0;s:9:"leftOuter";b:0;s:10:"rightOuter";b:0;s:9:"ansiOuter";b:0;s:12:"autoRollback";b:0;s:9:"fnExecute";b:0;s:14:"fnCacheExecute";b:0;s:14:"blobEncodeType";b:0;s:8:"rsPrefix";s:13:"ADORecordSet_";s:10:"autoCommit";b:1;s:8:"transOff";i:0;s:8:"transCnt";i:0;s:9:"fetchMode";b:0;s:9:"null2null";s:4:"null";s:8:"bulkBind";b:0;s:11:"_oldRaiseFn";b:0;s:8:"_transOK";N;s:13:"_connectionID";O:6:"mysqli":19:{s:13:"affected_rows";N;s:11:"client_info";N;s:14:"client_version";N;s:13:"connect_errno";N;s:13:"connect_error";N;s:5:"errno";N;s:5:"error";N;s:10:"error_list";N;s:11:"field_count";N;s:9:"host_info";N;s:4:"info";N;s:9:"insert_id";N;s:11:"server_info";N;s:14:"server_version";N;s:4:"stat";N;s:8:"sqlstate";N;s:16:"protocol_version";N;s:9:"thread_id";N;s:13:"warning_count";N;}s:9:"_errorMsg";s:146:"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1";s:10:"_errorCode";b:0;s:8:"_queryID";b:0;s:23:"_isPersistentConnection";b:1;s:8:"_evalAll";b:0;s:9:"_affected";b:0;s:7:"_logsql";b:0;s:10:"_transmode";s:0:"";s:12:"databaseName";s:6:"vtiger";}s:10:"dieOnError";b:0;s:6:"dbType";s:6:"mysqli";s:10:"dbHostName";s:14:"localhost:3306";s:6:"dbName";s:6:"vtiger";s:9:"dbOptions";a:6:{s:10:"persistent";b:1;s:8:"autofree";b:0;s:5:"debug";i:0;s:14:"seqname_format";s:6:"%s_seq";s:11:"portability";i:0;s:3:"ssl";b:0;}s:8:"userName";s:4:"root";s:12:"userPassword";s:6:"cincin";s:10:"query_time";i:0;s:3:"log";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";N;s:4:"name";s:13:"PearDatabase_";s:6:"parent";O:10:"LoggerRoot":7:{s:4:"name";s:4:"root";s:6:"parent";N;s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";O:11:"LoggerLevel":3:{s:5:"level";i:10000;s:8:"levelStr";s:5:"DEBUG";s:16:"syslogEquivalent";i:7;}s:10:"repository";O:15:"LoggerHierarchy":8:{s:14:"defaultFactory";O:28:"LoggerDefaultCategoryFactory":0:{}s:5:"debug";b:0;s:2:"ht";a:10:{s:8:"SECURITY";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";O:11:"LoggerLevel":3:{s:5:"level";i:50000;s:8:"levelStr";s:5:"FATAL";s:16:"syslogEquivalent";i:0;}s:4:"name";s:8:"SECURITY";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:1:{s:2:"A2";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:36:"/var/www/vtigercrm/logs/security.log";s:6:"append";b:1;s:8:"fileName";s:17:"logs/security.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A2";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:7:"INSTALL";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";r:140;s:4:"name";s:7:"INSTALL";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:1:{s:2:"A3";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:40:"/var/www/vtigercrm/logs/installation.log";s:6:"append";b:1;s:8:"fileName";s:21:"logs/installation.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A3";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:9:"MIGRATION";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";r:140;s:4:"name";s:9:"MIGRATION";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:1:{s:2:"A4";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:37:"/var/www/vtigercrm/logs/migration.log";s:6:"append";b:1;s:8:"fileName";s:18:"logs/migration.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A4";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:4:"SOAP";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";r:151;s:4:"name";s:4:"SOAP";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:1:{s:2:"A5";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:32:"/var/www/vtigercrm/logs/soap.log";s:6:"append";b:1;s:8:"fileName";s:13:"logs/soap.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A5";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:8:"PLATFORM";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";O:11:"LoggerLevel":3:{s:5:"level";i:20000;s:8:"levelStr";s:4:"INFO";s:16:"syslogEquivalent";i:6;}s:4:"name";s:8:"PLATFORM";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:1:{s:2:"A6";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:36:"/var/www/vtigercrm/logs/platform.log";s:6:"append";b:1;s:8:"fileName";s:17:"logs/platform.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A6";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:7:"SQLTIME";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";r:151;s:4:"name";s:7:"SQLTIME";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:1:{s:2:"A7";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:35:"/var/www/vtigercrm/logs/sqltime.log";s:6:"append";b:1;s:8:"fileName";s:16:"logs/sqltime.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A7";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:2:"VT";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";N;s:4:"name";s:2:"VT";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:0:{}}s:13:"PearDatabase_";r:130;s:4:"user";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";N;s:4:"name";s:4:"user";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:0:{}}s:10:"SalesOrder";O:6:"Logger":7:{s:8:"additive";b:1;s:4:"fqcn";s:14:"LoggerCategory";s:5:"level";N;s:4:"name";s:10:"SalesOrder";s:6:"parent";R:135;s:10:"repository";r:144;s:3:"aai";a:0:{}}}s:4:"root";R:135;s:11:"rendererMap";O:17:"LoggerRendererMap":2:{s:3:"map";a:0:{}s:15:"defaultRenderer";O:21:"LoggerDefaultRenderer":0:{}}s:9:"threshold";O:11:"LoggerLevel":3:{s:5:"level";i:-2147483648;s:8:"levelStr";s:3:"ALL";s:16:"syslogEquivalent";i:7;}s:24:"emittedNoAppenderWarning";b:0;s:30:"emittedNoResourceBundleWarning";b:0;}s:3:"aai";a:1:{s:2:"A1";O:25:"LoggerAppenderRollingFile":14:{s:11:"maxFileSize";i:3145728;s:14:"maxBackupIndex";i:10;s:16:"expandedFileName";s:37:"/var/www/vtigercrm/logs/vtigercrm.log";s:6:"append";b:1;s:8:"fileName";s:18:"logs/vtigercrm.log";s:2:"fp";i:0;s:14:"requiresLayout";b:1;s:6:"closed";b:1;s:12:"errorHandler";N;s:10:"headFilter";N;s:6:"layout";O:16:"LoggerLayoutTTCC":5:{s:14:"threadPrinting";b:1;s:17:"categoryPrefixing";b:1;s:15:"contextPrinting";b:1;s:20:"microSecondsPrinting";b:1;s:10:"dateFormat";s:2:"%c";}s:4:"name";s:2:"A1";s:10:"tailFilter";N;s:9:"threshold";N;}}}s:10:"repository";r:144;s:3:"aai";a:0:{}}s:12:"lastmysqlrow";i:-1;s:12:"enableSQLlog";b:0;s:22:"continueInstallOnError";b:1;s:16:"avoidPreparedSql";b:0;s:25:"isdb_default_utf8_charset";b:1;s:9:"req_flist";N;s:17:" * logSqlTimingID";b:0;} # - # Block: 240 # -
+Expression Syntax Error.
+ syntax error # - # Block: 363 # -
+Expression Syntax Error.
+ syntax error # - # Block: 363 # -
+アクセスを試みているレコードが見つかりません # - # Block: 353 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+ERROR IN EXPRESSION if($env["value"]["selectUserValue"]=="制作") return 'yes' # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 523 # -
+Expression Syntax Error.
+ syntax error # - # Block: 523 # -
+Expression Syntax Error.
+ syntax error # - # Block: 523 # -
+Expression Syntax Error.
+ syntax error # - # Block: 523 # -
+Expression Syntax Error.
+ syntax error # - # Block: 516 # -
+Expression Syntax Error.
+ syntax error # - # Block: 631 # -
+Expression Syntax Error.
+ syntax error # - # Block: 631 # -
+Expression Syntax Error.
+ syntax error # - # Block: 631 # -

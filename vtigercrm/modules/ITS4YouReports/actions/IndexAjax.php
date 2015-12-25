@@ -1,0 +1,725 @@
+<?php
+
+/*+********************************************************************************
+ * The content of this file is subject to the Reports 4 You license.
+ * ("License"); You may not use this file except in compliance with the License
+ * The Initial Developer of the Original Code is IT-Solutions4You s.r.o.
+ * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
+ * All Rights Reserved.
+ ********************************************************************************/
+
+class ITS4YouReports_IndexAjax_Action extends Vtiger_Action_Controller {
+	
+        function __construct() {
+		parent::__construct();
+                $this->exposeMethod('getStep5Columns');
+                $this->exposeMethod('getStep5SUMColumns');
+                $this->exposeMethod('getFilterColHtml');
+                $this->exposeMethod('getFilterDateHtml');
+                $this->exposeMethod('DownloadFile');
+                $this->exposeMethod('ExportXLS');
+                $this->exposeMethod('showSettingsList');
+                $this->exposeMethod('addWidget');
+                
+	}
+
+	function checkPermission(Vtiger_Request $request) { }
+
+	function preProcess(Vtiger_Request $request) {
+		return true;
+	}
+
+	function postProcess(Vtiger_Request $request) {
+		return true;
+	}
+
+	function process(Vtiger_Request $request) {
+            
+            $mode = $request->getMode();
+            if (!empty($mode)) {
+                    $this->invokeExposedMethod($mode, $request);
+            }
+	}
+        
+        function getStep5Columns(Vtiger_Request $request) {
+                $this->getColumns($request);
+        }
+        
+        function getStep5SUMColumns(Vtiger_Request $request) {
+                $this->getColumns($request, true);
+        }    
+            
+        function getColumns(Vtiger_Request $request, $is_sum = false) {    
+			$BLOCK0 = $BLOCK1 = $BLOCK2 = "";
+                
+                $selectedmodule = $request->get("selectedmodule");
+                
+                $SumOptions = array();
+                $secondarymodule = '';
+                $secondarymodules =Array();
+
+                $record = $request->get('record');
+
+                $reportModel = ITS4YouReports_Record_Model::getCleanInstance($record);
+                $primarymodule = $reportModel->getPrimaryModule();
+                $primarymoduleid = $reportModel->getPrimaryModuleId();
+
+                $modulename_prefix="";
+                if($selectedmodule!=$primarymoduleid && $selectedmodule != "") {
+                        $modulename = $selectedmodule;
+                        $reportModel->getSecModuleColumnsList($modulename);
+                        $module_array["id"] = $modulename;
+                        $modulename_arr = explode("x", $modulename);
+                        $modulename_id = $modulename_arr[0];
+                        if($modulename_arr[1]!=""){
+                            $modulename_prefix = $modulename_arr[1];
+                        }
+       
+                } else {
+                        $module_array["module"] = $primarymodule;
+                        $module_array["id"] = $primarymoduleid;
+
+                        $modulename = $module_array["module"];
+                        $modulename_lbl = vtranslate($modulename,$modulename);
+                        $availModules[$module_array["id"]] = $modulename_lbl;
+
+                        $modulename_id=$module_array["id"];
+                }
+
+                $relmod_arr = explode("x", $modulename);
+                if (is_numeric($relmod_arr[0])) {
+                    $stabid = $relmod_arr[0];
+                    $smodule = vtlib_getModuleNameById($stabid);
+                }
+                
+                if ($is_sum) {
+                    $SPSumOptions[$module_array["id"]][$modulename_id] = sgetSummariesOptions($modulename);
+                } else {
+                    if($selectedmodule!=$primarymoduleid && $selectedmodule != "") {
+                        $SPSumOptions[$modulename] = $reportModel->getSecondaryColumns(array(),$modulename);
+                    } else {
+                        $SPSumOptions[$module_array["id"]][$modulename_id] = $reportModel->getPrimaryColumns(array(),$modulename,true);
+                    }
+                }    
+
+                $step5_result="";
+
+                if($selectedmodule!=$primarymoduleid && $selectedmodule == "") {
+                        $secondarymodule_arr = $reportModel->getReportRelatedModules($module_array["id"]);
+
+                        $reportModel->getSecModuleColumnsList($secondarymodule);
+                        $available_modules[]=array("id"=>$primarymoduleid,"name"=>$modulename_lbl,"checked"=>"checked");
+                        foreach ($secondarymodule_arr as $key=>$value) {
+                                $available_modules[] = array("id"=>$value["id"],"name"=>$value["name"],"checked"=>"");
+                        }
+                        $AV_M = Zend_JSON::encode($available_modules);
+                        $step5_result .= $AV_M."(!A#V_M@M_M#A!)";
+                }
+
+                $BLOCK1 = "";
+
+                foreach ($SPSumOptions AS $module_key => $SumOptions) {
+                        $BLOCK2 = "";
+                        $r_modulename = vtlib_getModuleNameById($module_key);
+                        $r_modulename_lbl = vtranslate($r_modulename,$r_modulename); 
+
+                        foreach ($SumOptions as $SumOptions_key=>$SumOptions_value) {
+                                foreach ($SumOptions_value AS $optgroup => $optionsdata) {
+                                        if ($BLOCK2 != "")
+                                                $BLOCK2 .= "(|@!@|)";
+                                        $BLOCK2 .= $optgroup;
+                                        $BLOCK2 .= "(|@|)";
+
+                                        $BLOCK2 .= Zend_JSON::encode($optionsdata);
+                                }
+
+                                $BLOCK1 .= $module_key."(!#_ID@ID_#!)".$r_modulename_lbl."(!#_ID@ID_#!)".$BLOCK2;
+                        }
+                }
+
+                $step5_result .= $BLOCK1;
+
+                echo $step5_result;
+	}
+        
+        function getFilterColHtml(Vtiger_Request $request) {
+                require_once('modules/ITS4YouReports/ITS4YouReports.php');
+                
+                $return_html = "";
+                $n_c = 3;
+                $n_r = 5;
+                $n = ($n_c*$n_r);
+                $sfield_name = $request->get("sfield_name");
+				
+                $r_sel_fields = $request->get("r_sel_fields");
+        
+                $adb = PearDatabase::getInstance();
+                global $current_user;
+                //$roleid = $current_user->roleid;
+                //$sub = getSubordinateRoleAndUsers($roleid);
+                $roleid = $current_user->roleid;
+                $sub = getRoleSubordinates($roleid);
+                
+                $picklistGroupValues = array();
+
+                $currField = $request->get("currField");
+                $currField_arr = explode(":",$currField);
+                // list($s_tablename,$columnname,$s_module_field_label_str,$fieldname) = explode(":",$currField);
+                $s_tablename = $currField_arr[0];
+                $columnname = $currField_arr[1];
+                $s_module_field_label_str = $currField_arr[2];
+                $fieldname = $currField_arr[3];
+                $last_key = (count($currField_arr)-1);
+                $s_tablename_clear = $s_tablename;
+                if(is_numeric($currField_arr[$last_key]) || in_array($currField_arr[$last_key], array("INV", "MIF"))){
+                    $s_tablename_clear = trim($s_tablename, "_".$currField_arr[$last_key]);
+                }
+                $s_module_field_arr = explode("_", $s_module_field_label_str);
+                $moduleName = $s_module_field_arr[0];
+                $moduleTabId = getTabid($moduleName);
+                $uitypeSql = "SELECT uitype FROM vtiger_field WHERE tabid=? AND tablename=? AND columnname=?";
+//$adb->setDebug(true);
+                $uitypeParams = array($moduleTabId,$s_tablename_clear,$columnname);
+                $uitypeResult = $adb->pquery($uitypeSql, $uitypeParams);
+                $num_rowuitype = $adb->num_rows($uitypeResult);
+                if ($num_rowuitype > 0) {
+                    $uitype_row = $adb->fetchByAssoc($uitypeResult);
+                }elseif($moduleName=="Leads" && $fieldname=="converted"){
+                    $uitype_row = array("uitype"=>"56");
+                }else{
+                    $uitype_row = array("uitype"=>"1");
+                }
+                if(!empty($uitype_row) && in_array($uitype_row["uitype"],ITS4YouReports::$s_users_uitypes)){
+                    
+                    $picklistValues = get_user_array(false);
+                    
+                    $groups = get_group_array(false);
+                    if(!empty($groups)){
+                        foreach ($groups as $g_key=>$g_name) {
+                        	$picklistGroupValues[$g_key] = $g_name;
+                        }
+                    }
+                    $valueArr = explode("|##|", $value);
+                }elseif(!empty($uitype_row) && $uitype_row['uitype']=='56'){
+					$picklistValues = array("0"=>"LBL_NO","1"=>"LBL_YES");
+					//$valueArr = explode("|##|", $r_sel_fields);
+                    $valueArr = explode(",", $r_sel_fields);
+				}elseif(!empty($uitype_row) && $uitype_row['uitype']=='26'){
+					$sql = "select foldername,folderid from vtiger_attachmentsfolder order by foldername asc ";
+                    $res = $adb->pquery($sql, array());
+                    for ($i = 0; $i < $adb->num_rows($res); $i++) {
+                        $fid = $adb->query_result($res, $i, "folderid");
+                        $picklistValues[$fid] = $adb->query_result($res, $i, "foldername");
+                    }
+                    
+                    $valueArr = explode(",", $r_sel_fields);
+				}elseif(!empty($uitype_row) && $uitype_row['uitype']=='27'){
+					$picklistValues = array("I"=>"LBL_INTERNAL","E"=>"LBL_EXTERNAL");
+                    $valueArr = explode(",", $r_sel_fields);
+				}else{
+                    require_once 'modules/PickList/PickListUtils.php';
+                    
+                    if($uitype_row["uitype"]=="16"){
+                        $picklistValues = Vtiger_Util_Helper::getPickListValues($columnname);
+                    }else{    
+                        $picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
+                        $valueArr = explode("|##|", $value);
+                    }
+
+                }
+
+                $pickcount = 0;
+                $sel_fields = array();
+                $field_uitype = $uitype_row["uitype"];
+
+                if(!empty($picklistValues)){
+                    foreach($picklistValues as $order=>$pickListValue){
+                        $pickListValue = trim($pickListValue);
+						if($uitype_row['uitype']=='56'){
+							$check_val = ($pickListValue=="LBL_YES"?"yes":"no");
+							if(in_array(trim($order),array_map("trim", $valueArr)) || in_array($check_val,$valueArr)){
+								$chk_val = "selected";
+							}else{
+                                $chk_val = "";
+                            }
+                            $pickcount++;
+                        }elseif(in_array(trim($pickListValue),array_map("trim", $valueArr))){
+                            $chk_val = "selected";
+                            $pickcount++;
+                        }else{
+                            $chk_val = '';
+                        }
+						if($uitype_row['uitype']=='56'){
+							$sel_fields[] = array(vtranslate($pickListValue,$s_module_field_arr[0]),$order,$chk_val );
+						}else{
+                        	$sel_fields[] = array(vtranslate($pickListValue,$s_module_field_arr[0]),$pickListValue,$chk_val );
+						}
+                    }
+                    if($pickcount == 0 && !empty($value)){
+                        $sel_fields[] =  array(vtranslate('LBL_NOT_ACCESSIBLE'),$value,'selected');
+                    }
+                }
+
+                if($s_module_field_arr[0] == "Calendar"){
+                    if(in_array(trim("Task"),array_map("trim", $valueArr))){
+                        $chk_val = "selected";
+                    }else{
+                        $chk_val = '';
+                    }
+                    $sel_fields[] = array("Task",getTranslatedString("Task"),$chk_val );
+                    if(in_array(trim("Emails"),array_map("trim", $valueArr))){
+                        $chk_val = "selected";
+                    }else{
+                        $chk_val = '';
+                    }
+                    $sel_fields[] = array("Emails",getTranslatedString("Emails"),$chk_val );
+                }
+                if(!empty($sel_fields)){
+                        require_once('include/Zend/Json.php'); 
+                        $count_sel_fields = count($sel_fields);
+                        $data_fieldinfo = Zend_Json::encode(array("type"=>"picklist"));
+                        $return_html .= "<select name='s_".$sfield_name."' id='s_".$sfield_name."' style='display: none;' class='select2 row-fluid' data-value='value' name='columnname' data-fieldinfo='$data_fieldinfo' multiple='true' size='5'>";
+
+                        $selected_vals = array();
+                        
+                        $r_sel_fields = $request->get("r_sel_fields");
+                        $default_charset = vglobal("default_charset");
+                        $r_sel_fields = html_entity_decode($r_sel_fields, ENT_QUOTES, $default_charset);
+                        $record = $request->get("record");
+                        
+                        if($r_sel_fields != ""){
+                            $selected_vals = explode(",", $r_sel_fields);
+                        }elseif($record!=""){
+                            $currField = $request->get("currField");
+                            $sql = "SELECT value FROM its4you_reports4you_relcriteria WHERE queryid=? AND columnname=?";
+                            $result = $adb->pquery($sql,array($record,$currField));
+                            while($row = $adb->fetchByAssoc($result)){
+                                $selected_vals = explode(",", $row["value"]);	
+                            }
+                        }
+
+                        if(!empty($uitype_row) && in_array($uitype_row["uitype"],ITS4YouReports::$s_users_uitypes)){
+                            $return_html .= '<optgroup label="'.vtranslate('LBL_SPECIAL_OPTIONS').'">';
+                                $currentUserOptLbl = vtranslate("Current User");
+                                if(in_array("Current User",$selected_vals)){
+                                    $selected = " selected='selected' ";
+                                }
+                                $return_html .= "<option id='0' value='Current User' $selected>$currentUserOptLbl</option>";
+                            $return_html .= '</optgroup>';
+                            
+                            $return_html .= '<optgroup label="'.vtranslate('LBL_USERS').'">';
+                        }
+                        
+                        $n_i = $n_ci = 0;
+                        $count_n = count($sel_fields);
+
+                        foreach ($sel_fields as $key=>$sf_array) {
+
+                                $sf_text = $sf_array[0];
+                                $sf_value = html_entity_decode($sf_array[1], ENT_QUOTES, $default_charset);
+                                $selected = "";
+                                if($uitype_row["uitype"]=="56"){
+                                    $sf_value_str = ($sf_value=='1'?'yes':'no');
+									if($sf_array[2]=="selected"){
+										$selected = " selected='selected' ";
+									}
+                                }else{
+                                    if(in_array($sf_value,$selected_vals)){
+                                        $selected = " selected='selected' ";
+                                    }
+                                }
+                                $return_html .= "<option id='$key' value='$sf_value' $selected>$sf_text</option>";
+                                
+                        }
+                        // OWNER GROUPS !!!
+                        if(!empty($uitype_row) && in_array($uitype_row["uitype"],ITS4YouReports::$s_users_uitypes)){
+                            $return_html .= "</optgroup>
+                                            <optgroup label='".vtranslate('LBL_GROUPS')."'>";
+                                if(!empty($picklistGroupValues)){
+                                    foreach($picklistGroupValues as $order=>$pickListValue){
+                                        $pickListValue = trim($pickListValue);
+                						if(in_array(trim($pickListValue),array_map("trim", $valueArr))){
+                                            $chk_val = "selected";
+                                            $pickcount++;
+                                        }else{
+                                            $chk_val = '';
+                                        }
+                						if($uitype_row['uitype']=='56'){
+                							$group_fields[] = array(vtranslate($pickListValue,$s_module_field_arr[0]),$order,$chk_val );
+                						}else{
+                                        	$group_fields[] = array(vtranslate($pickListValue,$s_module_field_arr[0]),$pickListValue,$chk_val );
+                						}
+                                    }
+                                    if($pickcount == 0 && !empty($value)){
+                                        $group_fields[] =  array(vtranslate('LBL_NOT_ACCESSIBLE'),$value,'selected');
+                                    }
+                                }
+                                foreach ($group_fields as $key=>$sf_array) {
+                                    $sf_text = $sf_array[0];
+                                    $sf_value = html_entity_decode($sf_array[1], ENT_QUOTES, $default_charset);
+                                    $selected = "";
+                                    if($uitype_row["uitype"]=="56"){
+                                        $sf_value_str = ($sf_value=='1'?'yes':'no');
+    									if($sf_array[2]=="selected"){
+    										$selected = " selected='selected' ";
+    									}
+                                    }else{
+                                        if(in_array($sf_value,$selected_vals)){
+                                            $selected = " selected='selected' ";
+                                        }
+                                    }
+                                    $return_html .= "<option id='$key' value='$sf_value' $selected>$sf_text</option>";
+                                }
+                            $return_html .= "</optgroup>";
+                        }
+                        $return_html .= "</select>";
+                }
+                
+                echo $return_html;
+        }
+        /*
+        function getFilterColHtml(Vtiger_Request $request) {
+
+                $return_html = "";
+                $n_c = 3;
+                $n_r = 5;
+                $n = ($n_c*$n_r);
+                $sel_fields = $request->get("sel_fields");
+                $sfield_name = $request->get("sfield_name");
+
+                if($sel_fields!=""){
+                        //$json = new Zend_Json();
+                        //$sel_fields = $json->decode($sel_fields);
+                        $count_sel_fields = count($sel_fields);
+
+                        if($count_sel_fields>$n){
+                                $return_html .= "<select name='".$sfield_name."' id='".$sfield_name."' multiple='' size='5'>";
+                        }else{
+                                $return_html .= "<table>";
+                        }
+
+                        $selected_vals = array();
+                        
+                        $r_sel_fields = $request->get("r_sel_fields");
+                        $record = $request->get("record");
+                        
+                        if($r_sel_fields != ""){
+                            $selected_vals = explode(",", $r_sel_fields);
+                        }elseif($record!=""){
+                            $currField = $request->get("currField");
+                            $adb = PearDatabase::getInstance();
+                            $sql = "SELECT value FROM its4you_reports4you_relcriteria WHERE queryid=? AND columnname=?";
+                            $result = $adb->pquery($sql,array($record,$currField));
+                            while($row = $adb->fetchByAssoc($result)){
+                                $selected_vals = explode(",", $row["value"]);	
+                            }
+                        }
+
+                        $n_i = $n_ci = 0;
+                        $count_n = count($sel_fields);
+                        foreach ($sel_fields as $key=>$sf_array) {
+                                if($count_sel_fields<=$n){
+                                        if($n_ci==0){
+                                                $return_html .= "<tr>";
+                                        }
+                                        $return_html .= "<td>";
+                                }
+                                $sf_text = $sf_array["text"];
+                                $sf_value = $sf_array["value"];
+
+                                if($count_sel_fields>$n){
+                                        $selected = "";
+                                        if(in_array($sf_value,$selected_vals)){
+                                                $selected = " selected='selected' ";
+                                        }
+                                        $return_html .= "<option id='$key' value='$sf_value' $selected>$sf_text</option>";
+                                }else{
+                                        $selected = "";
+                                        if(in_array($sf_value,$selected_vals)){
+                                                $selected = " checked='true' ";
+                                        }
+                                        $return_html .= "<input type='checkbox' id='".$sfield_name."_|_$key' value='$sf_value' $selected>$sf_text";
+                                }
+
+                                if($count_sel_fields<=$n){
+                                        $return_html .= "</td>";
+                                }
+                                $n_ci++;
+                                if($count_sel_fields<=$n){
+                                        if($n_ci==$n_c){
+                                                $return_html .= "</tr>";
+                                                $n_ci=0;
+                                        }
+                                }
+                                $n_i++;
+                                if($n_i==$count_n){
+                                        for ($fi=0;$fi<($n_c-$n_ci);$fi++) {
+                                                $return_html .= "<td>&nbsp;</td>";
+                                        }
+                                        $return_html .= "</tr>";
+                                }
+                        }
+                        if($count_sel_fields>$n){
+                                $return_html .= "</selectbox>";
+                        }else{
+                                $return_html .= "</table>";
+                        }
+                }
+                echo $return_html;
+        }
+        */
+        function getFilterDateHtml(Vtiger_Request $request) {
+            $return_html = "";
+
+            $columnIndex = $request->get("columnIndex");
+            if($columnIndex!=""){
+               
+                $currentUser = Users_Record_Model::getCurrentUserModel();
+				$date_format = $currentUser->get('date_format');
+                //$date_format = "dd-mm-yyyy";
+                
+                
+                $moduleName = $request->getModule();
+                $record = $request->get("record");
+                $fop_type = $request->get("fop_type");
+
+                $reportModel = ITS4YouReports_Record_Model::getCleanInstance($record);
+                $rel_fields = $reportModel->getAdvRelFields();
+
+                $r_sel_fields = $request->get("r_sel_fields");
+
+                $ctype = "f";
+                $s_date_value = $e_date_value = "";
+                if($r_sel_fields!=""){
+                    $default_charset = vglobal("default_charset");
+
+                    
+
+                    if ($fop_type != "custom") {
+                        $std_val_array = GenerateObj::getStandarFiltersStartAndEndDate($fop_type);
+                    } else {
+                        $std_val_array = explode("<;@STDV@;>",html_entity_decode($r_sel_fields, ENT_QUOTES, $default_charset));
+                    }
+                	
+                    if(in_array($fop_type, array("todayless",))){
+                        $s_date_value = "";
+                        if($std_val_array[0]!="--" && $std_val_array[0]!=""){
+                            $e_date_value = $std_val_array[0];
+                        }else{
+                            $e_date_value = $std_val_array[1];
+                        }
+                    }elseif(in_array($fop_type, array("todaymore","older1days","older7days","older15days","older30days","older60days","older90days","older120days",))){
+                        $s_date_value = $std_val_array[0];
+                        $e_date_value = "";
+                    }else{
+                        $s_date_value = $std_val_array[0];
+                        $e_date_value = $std_val_array[1];
+                    }
+                }
+                if($fop_type!="custom"){
+                    $readonly = "true";
+                }else{
+                    $readonly = "false";
+                }
+				
+				if($s_date_value!=""){
+					$s_date_value_f = getValidDisplayDate($s_date_value);
+				}
+				if($e_date_value!=""){
+					$e_date_value_f = getValidDisplayDate($e_date_value);
+				}
+				
+                 //'<input id="Invoice_editView_fieldName_invoicedate" class="span9 dateField" name="invoicedate" data-date-format="dd-mm-yyyy" value="21-07-2014" data-fieldinfo="{\'mandatory\':false,\'presence\':true,\'quickcreate\':false,\'masseditable\':true,\'defaultvalue\':false,\'type\':\'date\',\'name\':\'invoicedate\',\'label\':\'Invoice Date\',\'date-format\':\'dd-mm-yyyy\'}" type="text">';
+                
+                $return_html .= "<div class='row-fluid'>
+                                        <div class='span6'>
+                                            <div class='row-fluid input-append'>
+                                                <div id='jscal_trigger_sdate".$columnIndex."' class='span10 row-fluid date hide'>
+                                                    <input class='span9 dateField' name='startdate' id='jscal_field_sdate_val_".$columnIndex."' data-date-format='".$date_format."' maxlength='10' value='".$s_date_value."' type='text'>
+                                                    <span class='add-on'><i class='icon-calendar'></i></span>    
+                                                </div>
+                                                <input data-value='value' class='span10' name='' id='jscal_field_sdate".$columnIndex."' readonly='true' value='".$s_date_value_f."'>
+                                            </div>
+                                            <!--<div class='row-fluid'>
+                                                    <font size='1'><b>".vtranslate("LBL_SF_STARTDATE", $moduleName)."</b></font>
+                                            </div>-->
+                                        </div>
+                                        <div class='span6'>
+                                            <div class='row-fluid input-append'>
+                                                <div id='jscal_trigger_edate".$columnIndex."' class='span10 row-fluid date hide'>
+                                                    <input class='span9 dateField' name='enddate' id='jscal_field_edate_val_".$columnIndex."' data-date-format=".$date_format."' maxlength='10' value='".$e_date_value."' type='text'>
+                                                    <span class='add-on'><i class='icon-calendar'></i></span>
+                                                </div>
+                                                <input data-value='value' class='span10' name='' id='jscal_field_edate".$columnIndex."' readonly='true' value='".$e_date_value_f."'>
+                                            </div>
+                                            <!--<div class='row-fluid'>
+                                                    <font size='1'><b>".vtranslate("LBL_SF_ENDDATE", $moduleName)."</b></font>
+                                            </div>-->
+                                        </div>
+                                </div>";
+                
+                
+                /*
+                $return_html .= "
+                <table>
+                    <tr>
+                        <td width='20%'>
+                            <table><tbody>
+                                <tr>
+                                    <td style='vertical-align:top;'>
+                                        <input name='startdate' id='jscal_field_sdate$columnIndex' style='border: 1px solid rgb(186, 186, 186);' size='10' maxlength='10' value='$s_date_value' type='text'>
+                                        <img style='visibility: hidden;' src='themes/softed/images/btnL3Calendar.gif' id='jscal_trigger_sdate$columnIndex' align='absmiddle'><br>
+                                        <font size='1'><b>".vtranslate("LBL_SF_STARTDATE", $moduleName).":</b><em old='(yyyy-mm-dd)'>(dd-mm-yyyy)</em></font>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width='30%'>
+                            <table><tbody>
+                                <tr>
+                                    <td style='vertical-align:top;'>
+                                        <input name='enddate' id='jscal_field_edate$columnIndex' style='border: 1px solid rgb(186, 186, 186);' size='10' maxlength='10' value='$e_date_value' type='text'>
+                                        <img style='visibility: hidden;' src='themes/softed/images/btnL3Calendar.gif' id='jscal_trigger_edate$columnIndex' align='absmiddle'><br>
+                                        <font size='1'><b>".vtranslate("LBL_SF_ENDDATE", $moduleName).":</b><em old='(yyyy-mm-dd)'>(dd-mm-yyyy)</em></font>
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                    </tr>
+                </table>
+                ";*/
+            }
+
+            echo $return_html;
+        }
+        
+        function DownloadFile(Vtiger_Request $request) {
+            require_once('config.php');
+            require_once('include/database/PearDatabase.php');
+
+            $adb = PearDatabase::getInstance();
+
+            $filepath = $request->get("filepath");
+            $name = $request->get("filename");
+
+            if($filepath != "")
+            {
+                $filesize = filesize($filepath);
+                if(!fopen($filepath, "r"))
+                {
+                    echo 'unable to open file';
+                }
+                else
+                {
+                    $fileContent = fread(fopen($filepath, "r"), $filesize);
+                }
+                header("Content-type: $fileType");
+                header("Content-length: $filesize");
+                header("Cache-Control: private");
+                header("Content-Disposition: attachment; filename=$name");
+                header("Content-Description: PHP Generated Data");
+                echo $fileContent;
+            }
+            else
+            {
+                echo "Record doesn't exist.";
+            }
+        }
+        
+        /*function ExportXLS(Vtiger_Request $request) {
+            require_once('config.php');
+            require_once('include/database/PearDatabase.php');
+            
+    $reportRun = ReportRun::getInstance($this->getId());
+    $advanceFilterSql = $this->getAdvancedFilterSQL();
+    $rootDirectory = vglobal('root_directory');
+    $tmpDir = vglobal('tmp_dir');
+
+    $tempFileName = tempnam($rootDirectory.$tmpDir, 'xls');
+    $fileName = decode_html($this->getName()).'.xls';
+    $reportRun->writeReportToExcelFile($tempFileName, $advanceFilterSql);
+
+    if(isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
+        header('Pragma: public');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    }
+
+    header('Content-Type: application/x-msexcel');
+    header('Content-Length: '.@filesize($tempFileName));
+    header('Content-disposition: attachment; filename="'.$fileName.'"');
+
+    $fp = fopen($tempFileName, 'rb');
+    fpassthru($fp);
+    //unlink($tempFileName);
+
+            /*
+            if($datatodisplay != "")
+            {
+                header('Content-Type: application/force-download');
+                header('Content-disposition: attachment; filename=export.xls');
+                // Fix for crappy IE bug in download.
+                header("Pragma: ");
+                header("Cache-Control: ");
+                echo $datatodisplay;
+            }
+            else
+            {
+                echo "No Data to display.";
+            }
+            * /
+        }*/
+    function showSettingsList(Vtiger_Request $request) {
+        //$ITS4YouReports = new ITS4YouReports_ITS4YouReports_Model();
+        
+        $viewer = $this->getViewer($request);
+        $moduleName = $request->getModule();
+
+        $moduleModel = Vtiger_Module_Model::getInstance($moduleName);
+        
+        $viewer->assign('MODULE', $moduleName);
+
+        $linkParams = array('MODULE' => $moduleName, 'ACTION' => $request->get('view'), 'MODE' => $request->get('mode'));
+        $linkModels = $moduleModel->getSideBarLinks($linkParams);
+
+        $viewer->assign('QUICK_LINKS', $linkModels);
+
+        $parent_view = $request->get('pview');
+        
+        $viewer->assign('CURRENT_PVIEW', $parent_view);
+        
+        echo $viewer->view('SettingsList.tpl', 'ITS4YouReports', true);
+    }
+    
+    function addWidget(){
+        $success = false;
+        
+        global $adb;
+        global $current_user;
+        
+        $request = new Vtiger_Request($_REQUEST, $_REQUEST);
+        
+        $record = $request->get("record");
+        
+        if($record!=""){
+            $reportModel = ITS4YouReports_Record_Model::getCleanInstance($record);
+            $createResult = $reportModel->checkDashboardWidget();
+        }
+        
+        if($createResult=="Created"){
+            $result = array("success"=>false,"message"=>vtranslate("LBL_ADD_WIDGET_SUCCESS", "ITS4YouReports"));
+        }elseif($createResult=="Exist"){
+            $result = array("success"=>false,"message"=>vtranslate("LBL_ADD_WIDGET_ERROR_EXIST", "ITS4YouReports"));
+        } else {
+            $result = array("success"=>false,"message"=>vtranslate("LBL_ADD_WIDGET_ERROR", "ITS4YouReports"));
+        }
+        
+        $response = new Vtiger_Response();
+        try {
+            $response->setResult($result);
+        } catch (Exception $e) {
+            $response->setError($e->getCode(), $e->getMessage());
+        }
+        $response->emit();
+
+    }
+}
