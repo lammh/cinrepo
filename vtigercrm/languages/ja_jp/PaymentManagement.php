@@ -11,6 +11,7 @@ $languageStrings = array(
     "association_status" => "取込ステータス",
     "SINGLE_PaymentManagement" => "入金情報",
     "LBL_PAYMENT_MANAGEMENT_INFORMATION" => "入金情報の詳細",
+    "test" => "テスト",
 );
 
 $jsLanguageStrings = array(
